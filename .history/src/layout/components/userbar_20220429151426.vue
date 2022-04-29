@@ -119,15 +119,15 @@
 						type: 'info',
 					}).then(async () => {
 						const loading = this.$loading()
-						await this.$API.auth.clearUserCache.get()
 						this.$TOOL.data.clear()
-						this.$router.replace({
-							path: '/login'
-						})
-						setTimeout(() => {
-							loading.close()
-							location.reload()
-						}, 1000)
+						await this.$API.auth.clearUserCache.get()
+						// this.$router.replace({
+						// 	path: '/login'
+						// })
+						// setTimeout(() => {
+						// 	loading.close()
+						// 	location.reload()
+						// }, 1000)
 					}).catch(() => {
 						//取消
 					})

@@ -121,13 +121,13 @@
 						const loading = this.$loading()
 						await this.$API.auth.clearUserCache.get()
 						this.$TOOL.data.clear()
-						this.$router.replace({
-							path: '/login'
-						})
-						setTimeout(() => {
-							loading.close()
-							location.reload()
-						}, 1000)
+						// this.$router.replace({
+						// 	path: '/login'
+						// })
+						// setTimeout(() => {
+						// 	loading.close()
+						// 	location.reload()
+						// }, 1000)
 					}).catch(() => {
 						//取消
 					})

@@ -98,8 +98,8 @@
 		},
 		created() {
 			var userInfo = this.$TOOL.data.get("USER_INFO");
-			this.userName = userInfo.name;
-			this.userNameF = this.userName.substring(0, 1);
+			this.userName = userInfo.userName;
+			this.userNameF = this.userName;
 		},
 		methods: {
 			//个人信息
@@ -119,8 +119,8 @@
 						type: 'info',
 					}).then(async () => {
 						const loading = this.$loading()
-						await this.$API.auth.clearUserCache.get()
 						this.$TOOL.data.clear()
+						await this.$API.auth.clearUserCache()
 						this.$router.replace({
 							path: '/login'
 						})

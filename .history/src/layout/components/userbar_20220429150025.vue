@@ -98,7 +98,7 @@
 		},
 		created() {
 			var userInfo = this.$TOOL.data.get("USER_INFO");
-			this.userName = userInfo.name;
+			this.userName = userInfo.userName;
 			this.userNameF = this.userName.substring(0, 1);
 		},
 		methods: {
@@ -117,10 +117,10 @@
 				if (command == "clearCache") {
 					this.$confirm('清除缓存会将系统初始化，包括登录状态、主题、语言设置等，是否继续？', '提示', {
 						type: 'info',
-					}).then(async () => {
+					}).then(() => {
 						const loading = this.$loading()
-						await this.$API.auth.clearUserCache.get()
 						this.$TOOL.data.clear()
+						await this.$API.auth.clearUserCache.get()
 						this.$router.replace({
 							path: '/login'
 						})

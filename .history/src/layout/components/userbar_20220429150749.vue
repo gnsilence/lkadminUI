@@ -119,8 +119,8 @@
 						type: 'info',
 					}).then(async () => {
 						const loading = this.$loading()
-						await this.$API.auth.clearUserCache.get()
 						this.$TOOL.data.clear()
+						await this.$API.auth.clearUserCache.get()
 						this.$router.replace({
 							path: '/login'
 						})
