@@ -37,5 +37,19 @@ export default {
 		get: async function (data = {}) {
 			return await http.get(this.url)
 		}
+	},
+	systemUseInfo: {
+		url: `${config.API_URL}/sysMachine/use`,
+		name: '系统运行信息',
+		get: async function (data = {}) {
+			return await http.get(this.url)
+		}
+	},
+	systemInfo: {
+		url: `${config.API_URL}/sysMachine/base`,
+		name: '系统基本信息',
+		get: async function (data = {}) {
+			return await http.get(this.url)
+		}
 	}
 }
