@@ -17,7 +17,7 @@
 					</div>
 					<el-row :gutter="15">
 						<el-col v-for="(item, index) in grid.layout" v-bind:key="index" :md="item" :xs="24">
-							<draggable v-model="grid.copmsList[index]" animation="200" handle=".customize-overlay" group="people" item-key="com" dragClass="aaaaa" force-fallback fallbackOnBody class="draggable-box">
+							<draggable  v-model="grid.copmsList[index]" animation="200" :scroll-sensitivity="300" handle=".customize-overlay" group="people" item-key="com" dragClass="aaaaa" :force-fallback="true"  class="draggable-box">
 								<template #item="{ element }">
 									<div class="widgets-item">
 										<component :is="allComps[element]"></component>
@@ -60,6 +60,14 @@
 								<el-col :span="24"><span></span></el-col>
 								<el-col :span="24"><span></span></el-col>
 								<el-col :span="24"><span></span></el-col>
+							</el-row>
+						</div>
+						<div class="selectLayout-item item03" :class="{active:grid.layout.join(',')=='24,8,8,8'}" @click="setLayout([24,8,8,8])">
+							<el-row :gutter="2">
+								<el-col :span="24"><span></span></el-col>
+								<el-col :span="8"><span></span></el-col>
+								<el-col :span="8"><span></span></el-col>
+								<el-col :span="8"><span></span></el-col>
 							</el-row>
 						</div>
 					</div>
@@ -151,11 +159,13 @@
 			},
 			//设置布局
 			setLayout(layout){
+				console.log(this.grid.copmsList)
 				this.grid.layout = layout
 				if(layout.join(',')=='24'){
 					this.grid.copmsList[0] = [...this.grid.copmsList[0],...this.grid.copmsList[1],...this.grid.copmsList[2]]
 					this.grid.copmsList[1] = []
 					this.grid.copmsList[2] = []
+					this.grid.copmsList[3] = []
 				}
 			},
 			//追加

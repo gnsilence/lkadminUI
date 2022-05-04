@@ -1,5 +1,30 @@
 <template>
-	<el-card shadow="hover" header="系统信息" v-loading="loading">
+	<el-card class="chartinfo" shadow="hover" header="系统信息" v-loading="loading">
+		<div>
+			<div class="tips">
+				<div class="tips-item">
+					<div class="tips-item-icon">
+						<el-icon>
+							<el-icon-menu/></el-icon>
+					</div>
+					<div class="tips-item-message">操作系统: {{SystemInfo.systemOs}}</div>
+				</div>
+				<div class="tips-item">
+					<div class="tips-item-icon">
+						<el-icon>
+							<el-icon-promotion/></el-icon>
+					</div>
+					<div class="tips-item-message">框架版本: {{SystemInfo.frameworkDescription}}</div>
+				</div>
+				<div class="tips-item">
+					<div class="tips-item-icon">
+						<el-icon>
+							<el-icon-milk-tea/></el-icon>
+					</div>
+					<div class="tips-item-message">当前IP：{{SystemInfo.wanIp}}</div>
+				</div>
+			</div>
+		</div>
 		<scEcharts ref="c1" height="300px" :option="option"></scEcharts>
 	</el-card>
 </template>
@@ -28,6 +53,7 @@
 			} = getCurrentInstance()
 			const _this = appContext.config.globalProperties
 			const option = ref({})
+			const SystemInfo = ref({})
 			const gaugeData = reactive([{
 					value: 20,
 					name: 'CPU',
@@ -103,6 +129,13 @@
 					}
 				}]
 			}
+			// 获取服务器系统基础信息
+			const getSysteminfo = async() => {
+				var res = await _this.$API.auth.systemInfo.get()
+				if(res.success){
+					SystemInfo.value=res.data
+				}
+			}
 			// 获取系统cpu,内存使用情况
 			const loadData = async() => {
 				var res = await _this.$API.auth.systemUseInfo.get()
@@ -120,13 +153,47 @@
 				second: 5,
 				func: loadData
 			})
-			onMounted(() => {
+			onMounted(async () => {
+				await getSysteminfo()
 			})
-			onDeactivated(() => {
-			})
+			onDeactivated(() => {})
 			return {
-				option
+				option,
+				getSysteminfo,
+				SystemInfo
 			}
 		}
 	}
 </script>
+
+<style scoped>
+	.tips {
+		margin-top: 20px;
+		padding: 0 40px;
+	}
+	.tips-item {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 7.5px 0;
+	}
+	.tips-item-icon {
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		font-size: 18px;
+		margin-right: 20px;
+		color: var(--el-color-primary);
+		background: rgba(180, 180, 180, 0.1);
+	}
+	.tips-item-message {
+		flex: 1;
+		font-size: 14px;
+	}
+	.chartinfo {
+		justify-content: baseline;
+	}
+</style>

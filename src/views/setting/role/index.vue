@@ -43,7 +43,7 @@
             >编辑
             </el-button>
             <el-dropdown>
-              <span class="el-dropdown-link" style="color: #409EFF;cursor: pointer;">
+              <span class="el-dropdown-link" style="cursor: pointer;">
                 更多 <el-icon class="el-icon--right"><arrow-down /></el-icon>
               </span>
               <template #dropdown>
@@ -296,10 +296,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang='scss'>
 .productDrawerButton {
   position: absolute;
   bottom: 20px;
   left: 20px;
+}
+.el-dropdown-link{
+	color: var(--el-color-primary);
+	font-size: var(--el-font-size-base,14px);
+	font-weight: var(--el-button-font-weight);
+	line-height: 2;
 }
 </style>
