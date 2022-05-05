@@ -100,7 +100,6 @@
 <script>
 	import draggable from 'vuedraggable'
 	import allComps from './components'
-
 	export default {
 		components: {
 			draggable

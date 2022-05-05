@@ -77,6 +77,7 @@
 					}
 				}
 			])
+
 			const loading = ref(false)
 			option.value = {
 				series: [{
