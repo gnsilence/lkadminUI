@@ -101,7 +101,7 @@
 							@change="chgOrgIds"
 						></yySelectTree>
 					</el-form-item> -->
-					<emp-org-pos></emp-org-pos>
+					<EmpOrgPos></EmpOrgPos>
 				</el-form>
 			</el-tab-pane>
 		</el-tabs>

@@ -68,16 +68,13 @@
 						/>
 					</el-form-item>
 					<el-form-item label="直属岗位:" prop="limitTime">
-						 <el-select v-model="Empform.posIdList"  filterable :multiple-limit="5" clearable multiple placeholder="请选择岗位" style="width:100%" @clear="clearSelect" @change="chgSelect">
-          <el-option
-            v-for="item in positionList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
+						 <el-select class="width-100" v-model="Empform.PosIdList" multiple clearable filterable remote @change="contractServiceMansChange" placeholder="请选择岗位">
+          <el-option v-for="item in positionList" :key="item.value" :label="item.label" :value="item.value">
+		  {{item.label}}
+            </el-option>
+          </el-select>
 					</el-form-item>
-					<!-- <el-form-item label="附属部门:" prop="limitTime">
+					<el-form-item label="附属部门:" prop="limitTime">
 						<yySelectTree
 							:data="groupTree"
 							keyid="id"
@@ -100,8 +97,8 @@
 							:loading="treeLoading"
 							@change="chgOrgIds"
 						></yySelectTree>
-					</el-form-item> -->
-					<emp-org-pos></emp-org-pos>
+					</el-form-item>
+					<div></div>
 				</el-form>
 			</el-tab-pane>
 		</el-tabs>
@@ -135,11 +132,7 @@
 	import {
 		sysPosList
 	} from '@/api/setting/structure/position.js'
-	import EmpOrgPos from './emporgext'
 	export default {
-		components:{
-			EmpOrgPos
-		},
 		setup(props, context) {
 			const {
 				appContext
@@ -171,12 +164,11 @@
 					cpwd: "",
 				},
 			});
-			// 员工信息
 			const Empform = reactive({
 				orgId: "",
 				orgName: "",
 				jobNum: "",
-				posIdList:[]
+				PosIdList:[]
 			});
 			const setPwdValue = () => {
 				form.confirmpwd.pwd = form.password;

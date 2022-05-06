@@ -1,0 +1,348 @@
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.align-items {
+  align-items: center;
+}
+
+.justify-space-start {
+  justify-content: flex-start;
+}
+.justify-space-between {
+  justify-content: space-between;
+}
+
+.justify-space-around {
+  justify-content: space-around;
+}
+.justify-space-center {
+  justify-content: center;
+}
+
+.flex-direction {
+  flex-direction: column;
+}
+
+.p5 {
+  padding: 5px;
+}
+
+.p10 {
+  padding: 10px;
+}
+
+.p15 {
+  padding: 15px;
+}
+
+.p20 {
+  padding: 20px;
+}
+
+.p-30 {
+  padding: 30px;
+}
+
+.p-5-16 {
+  padding: 5px 16px
+}
+
+.pb-5 {
+  padding-bottom: 5px;
+}
+
+.pb-10 {
+  padding-bottom: 10px;
+}
+
+.pb-15 {
+  padding-bottom: 15px;
+}
+
+.pl-5 {
+  padding-left: 5px;
+}
+
+.pl15 {
+  padding-left: 15px;
+}
+
+.pt30 {
+  padding-top: 30px;
+}
+
+.mt5 {
+  margin-top: 5px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.mt15 {
+  margin-top: 15px;
+}
+
+.mt40 {
+  margin-top: 40px;
+}
+
+.mt50 {
+  margin-top: 50px;
+}
+
+.mb5 {
+  margin-bottom: 5px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
+.mb15 {
+  margin-bottom: 15px;
+}
+
+.mb30 {
+  margin-bottom: 30px;
+}
+
+.mr-5 {
+  margin-right: 5px;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+.mr-15 {
+  margin-right: 15px;
+}
+
+.mr-30 {
+  margin-right: 30px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+.bg-fff {
+  background-color: #fff;
+}
+
+.border-b {
+  border-bottom: 1px solid #ebeef5;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.width-50 {
+  width: 50%;
+}
+
+.width-47 {
+  width: 47%;
+}
+
+.width-40 {
+  width: 40%;
+}
+
+.height-100 {
+  height: 100%;
+}
+
+.fz-12 {
+  font-size: 12px;
+}
+
+.fz-14 {
+  font-size: 14px;
+}
+
+.fz-16 {
+  font-size: 16px;
+}
+
+.fz-20 {
+  font-size: 20px;
+}
+
+.fz-28 {
+  font-size: 28px;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.col-409EFF {
+  color: #409EFF;
+
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.left{
+  float: left;
+}
+.right{
+  float: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-hidden-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ----------修改全局滚动条的默认样式-----------
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+  background-color: white;
+}
+
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+  border-radius: 999px;
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.settingForm {
+  .el-form-item {
+    margin-bottom: 5px !important;
+  }
+
+}
+
+.dropdownTextOc {
+  font-size: 12px;
+  margin-right: 10px;
+  color: #409eff;
+}
+
+.uploadFile {
+  .el-upload {
+    width: 100%;
+  }
+}
+
+.ocDropdown {
+  .el-dropdown-menu__item {
+    padding: 0;
+  }
+
+  .el-dropdown-menu__item {
+    justify-content: center;
+  }
+}
+
+// 设置全局滚动条样式
+body ::-webkit-scrollbar {
+  width: 4px;
+  height: 10px;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+body ::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  border-radius: 2px;
+  background-color: #FFFFFF
+}
+
+body ::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: rgb(153, 149, 149)
+}
+
+// 时间线时间的颜色
+.el-timeline-item__timestamp {
+  color: black !important;
+  font-size: medium;
+}
+
+//商机详情也的上传列表进度条
+#detailsUpload {
+  .el-upload-list {
+    height: calc(100vh - 56vh);
+    overflow: auto;
+  }
+}
+
+//审批页面抽屉样式修该
+.approvalDrawer {
+  .el-drawer__header {
+    margin-bottom: 15px;
+  }
+}
+
+//标题分割块样式
+.approva-lump {
+  width: 3px;
+  height: 20px;
+  margin-right: 10px;
+  background-color: #409eff;
+}
+
+.reimburse {
+  .el-divider--horizontal {
+    margin: 10px 0;
+  }
+}
+.customer-Tabs {
+  width: 100%;
+
+  .el-tabs__header {
+    background: #fff;
+    padding: 0 10px;
+    margin: 0;
+  }
+}
+.nobgbm{
+  border-bottom: 0px !important;
+  background-color: transparent !important;
+}
+.w-150{
+  width: 150px;
+}
+
+.w-350{
+  width: 350px;
+}
+
+.el-tag--small{
+  height: 25px !important;
+}

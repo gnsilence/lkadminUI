@@ -1,0 +1,232 @@
+<!--
+ * @Author: gongnan
+ * @Date: 2022-05-06 10:43:15
+ * @LastEditors: gongnan
+ * @LastEditTime: 2022-05-06 10:49:46
+ * @Description: file content
+ * @FilePath: \front\src\views\setting\structure\components\emporgext.vue
+-->
+<template>
+  <div>
+    <div class="mb30">
+      <!--      标题-->
+      <div class="flex justify-space-between mb30" style="padding: 0 15px">
+        <div class="flex">
+          <div class="approva-lump" />
+          <div class="fz-14 fw-600">产品明细</div>
+        </div>
+        <el-button type="primary" @click="addProduct">
+          <el-icon class="el-icon--left">
+            <Plus />
+          </el-icon>
+          添加产品
+        </el-button>
+      </div>
+      <!--      头部-->
+      <div class="flex justify-space-between align-items productTable">
+        <div class="fz-14 wp-260">产品名称</div>
+        <div class="text-right fz-14 wp-150">成交金额（元）</div>
+        <div class="text-right fz-14 wp-140">产品期限（月）</div>
+        <div class="text-right fz-14 wp-110">操作</div>
+      </div>
+      <!--      内容-->
+      <el-form ref="formRef" label-width="0px" :model="produceLists" :rules="rules">
+        <div
+          class="flex mb15 justify-space-between align-items productTableItem"
+          v-for="(val, index) in produceLists.produce"
+        >
+          <div class="wp-260">
+            <el-form-item
+              :prop="'produce.' + index + '.productValue'"
+              :rules="rules.productValue"
+            >
+              <el-select
+                class="width-100"
+                v-model="val.productValue"
+                clearable
+                filterable
+                placeholder="请选择产品"
+                @change="changeProduct(index)"
+              >
+                <el-option
+                  v-for="item in productOptions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name"
+                />
+              </el-select>
+            </el-form-item>
+          </div>
+          <div class="wp-150">
+            <el-form-item :prop="'produce.' + index + '.price'" :rules="rules.price">
+              <!-- <money-input
+                v-model="val.price"
+                :controls="false"
+                placeholder="请输入成交金额"
+                style="width: 100%"
+                @changeMoney="priceChnage(index)"
+              ></money-input> -->
+            </el-form-item>
+          </div>
+          <div class="text-right wp-140">
+            {{ val.productLimit }}
+          </div>
+          <div class="text-right wp-110" @click="deleteProduct(index)">
+            <el-button type="text">移除</el-button>
+          </div>
+        </div>
+      </el-form>
+      <!--      结算-->
+      <div class="flex mb15 mt15 justify-space-between align-items productTableItemCount">
+        <div class="wp-260">总金额</div>
+        <div class="text-right wp-150">{{ count }}元</div>
+        <div class="text-right wp-110"></div>
+        <div class="text-right wp-110"></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { ElMessage, ElMessageBox } from "element-plus";
+import { Plus } from "@element-plus/icons-vue";
+import { getCurrentInstance, reactive, ref } from "vue";
+// import { page } from "@/api/product";
+import { contract_rules } from "@/utils/rules/contract";
+export default {
+  name: "EmpOrgPos",
+  components: { Plus },
+  setup(props, { emit }) {
+    const { appContext } = getCurrentInstance();
+    const _this = appContext.config.globalProperties;
+    const rules = contract_rules; // 正则校验
+    const produceLists = reactive({
+      produce: [
+        {
+          productValue: "",
+          price: undefined,
+          productLimit: null,
+        },
+      ],
+    });
+    //所有产品
+    const productOptions = ref([]);
+    // getProductOptions();
+    //选择产品，并赋值价格，期限
+    const changeProduct = (index) => {
+      const value = productOptions.value.filter((item) => {
+        return item.name === produceLists.produce[index].productValue;
+      });
+      if (value) {
+        produceLists.produce[index].price = value[0].price;
+        produceLists.produce[index].productLimit = value[0].timE_LIMIT;
+      }
+      addCount();
+    };
+    //改变原有的价格
+    const priceChnage = (index) => {
+      //获取标准价格
+      const name = produceLists.produce[index].productValue;
+      if (!name) {
+        return;
+      }
+      const value = productOptions.value.filter((item) => {
+        return item.name === name;
+      });
+      if (value) {
+        if (produceLists.produce[index].price.toString() === value[0].price.toString()) {
+          emit("change", false);
+        } else {
+          emit("change", true);
+        }
+      }
+      addCount();
+    };
+    //计算总金额
+    const count = ref("0.00");
+    const addCount = () => {
+      let num = 0;
+      produceLists.produce.forEach((item) => {
+        num += Number(item.price);
+      });
+      const moneyFormat = _this.$TOOL.moneyFormat;
+      count.value = moneyFormat(num, 2, ".", ",");
+    };
+    //添加产品
+    const addProduct = () => {
+      produceLists.produce.push({
+        productValue: "",
+        price: undefined,
+        productLimit: null,
+      });
+    };
+    //删除产品
+    const deleteProduct = (index) => {
+      if(produceLists.produce.length==1){
+        ElMessage.error("产品信息不能少于一条");
+        return false
+      }
+      produceLists.produce.splice(index, 1);
+      addCount();
+    };
+    //正则验证并返回数据
+    const formRef = ref();
+    const getData = () => {
+      let data = {};
+      formRef.value.validate((valid, fields) => {
+        if (valid) {
+          data = { status: true, data: produceLists.produce };
+        } else {
+          data = { status: false, data: [fields] };
+        }
+      });
+      return data;
+    };
+    return {
+      formRef,
+      produceLists,
+      productOptions,
+      count,
+      rules,
+      addCount,
+      getData,
+      addProduct,
+      deleteProduct,
+      changeProduct,
+      priceChnage,
+    };
+  },
+};
+</script>
+
+<style scoped>
+.productTable {
+  padding: 0 15px 10px 30px;
+  border-bottom: 1px solid #909399;
+}
+
+.productTableItem {
+  padding: 15px 15px 0px 30px;
+  border-bottom: 1px solid #909399;
+}
+
+.productTableItemCount {
+  padding: 0px 15px 15px 30px;
+}
+
+.wp-260 {
+  width: 260px;
+}
+
+.wp-150 {
+  width: 150px;
+}
+
+.wp-140 {
+  width: 140px;
+}
+
+.wp-110 {
+  width: 110px;
+}
+</style>

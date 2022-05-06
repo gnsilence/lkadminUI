@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-05 17:30:47
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-06 09:52:12
+ * @LastEditTime: 2022-05-06 09:51:25
  * @Description: file content
  * @FilePath: \front\src\views\setting\structure\position\index.vue
 -->
@@ -62,7 +62,7 @@
 		编辑
 	</el-button>
 	<el-dropdown>
-		<span class="el-dropdown-link" style="cursor: pointer;">
+		<span class="el-dropdown-link" style="color: #409EFF;cursor: pointer;">
 	                更多 <el-icon class="el-icon--right"><arrow-down /></el-icon>
 	              </span>
 		<template #dropdown>

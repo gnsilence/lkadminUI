@@ -77,7 +77,7 @@
           />
         </el-select>
 					</el-form-item>
-					<!-- <el-form-item label="附属部门:" prop="limitTime">
+					<el-form-item label="附属部门:" prop="limitTime">
 						<yySelectTree
 							:data="groupTree"
 							keyid="id"
@@ -100,8 +100,8 @@
 							:loading="treeLoading"
 							@change="chgOrgIds"
 						></yySelectTree>
-					</el-form-item> -->
-					<emp-org-pos></emp-org-pos>
+					</el-form-item>
+					<div></div>
 				</el-form>
 			</el-tab-pane>
 		</el-tabs>
@@ -135,11 +135,7 @@
 	import {
 		sysPosList
 	} from '@/api/setting/structure/position.js'
-	import EmpOrgPos from './emporgext'
 	export default {
-		components:{
-			EmpOrgPos
-		},
 		setup(props, context) {
 			const {
 				appContext
@@ -171,7 +167,6 @@
 					cpwd: "",
 				},
 			});
-			// 员工信息
 			const Empform = reactive({
 				orgId: "",
 				orgName: "",
