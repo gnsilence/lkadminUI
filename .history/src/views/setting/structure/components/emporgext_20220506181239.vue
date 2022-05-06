@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-06 10:43:15
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-06 18:35:59
+ * @LastEditTime: 2022-05-06 18:12:39
  * @Description: file content
  * @FilePath: \front\src\views\setting\structure\components\emporgext.vue
 -->
@@ -128,24 +128,16 @@
 				}
 			};
 			const onclearData = (val) => {}
-			// 附属部门变动时禁用已经选择的部门
 			const OnEmpOrgChange = (val) => {
 				var datas = getTreeitem(groupTree, val)
 				if (datas) {
-					console.log('%c⧭', 'color: #ca4c1b', datas)
 					datas.disabled = true
-					let info = emporgLists.emp.find(a=>a.OrgId==datas.id)
-					if(info){
-						info.OrgName=datas.label
-						info.OrgCode=datas.label
-					}
 				}
 			}
-			// 当直属机构选择时禁用直属机构已经选择的机构
 			const onBaseOrgChange = (val) => {
 				baseorgid.value = val
-				var datas = getTreeitem(groupTree, val)
-				if (datas) {
+				if (val) {
+					var datas = getTreeitem(groupTree, val)
 					datas.disabled = true
 				}
 			}
@@ -169,6 +161,24 @@
 					}
 				}
 			}
+			//改变原有的价格
+			const priceChnage = (index) => {
+				//获取标准价格
+				const name = produceLists.produce[index].productValue;
+				if (!name) {
+					return;
+				}
+				const value = productOptions.value.filter((item) => {
+					return item.name === name;
+				});
+				if (value) {
+					if (produceLists.produce[index].price.toString() === value[0].price.toString()) {
+						emit("change", false);
+					} else {
+						emit("change", true);
+					}
+				}
+			};
 			//添加附属部门
 			const addProduct = () => {
 				emporgLists.emp.push({
@@ -199,6 +209,7 @@
 				changeProduct,
 				groupTree,
 				treeLoading,
+				priceChnage,
 				positionList,
 				onBaseOrgChange,
 				OnEmpOrgChange,

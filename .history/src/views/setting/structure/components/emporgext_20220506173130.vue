@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-06 10:43:15
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-06 18:35:59
+ * @LastEditTime: 2022-05-06 17:31:29
  * @Description: file content
  * @FilePath: \front\src\views\setting\structure\components\emporgext.vue
 -->
@@ -34,7 +34,7 @@
 				<div class="flex mb15 justify-space-between align-items productTableItem" v-for="(val, index) in emporgLists.emp">
 					<div class="wp-260">
 						<el-form-item :prop="'emp.' + index + '.OrgId'" :rules="rules.productValue">
-							<el-tree-select @clear="onclearData" @change="OnEmpOrgChange" class="treeselect" v-model="val.OrgId" :data="groupTree" clearable />
+							<el-tree-select class="treeselect" v-model="val.OrgId" :data="groupTree" clearable />
 						</el-form-item>
 					</div>
 					<div class="wp-150">
@@ -98,14 +98,13 @@
 		setup(props, {
 			emit
 		}) {
-			const baseorgid = ref() // 直属机构选择的id
 			const treeLoading = ref(false);
+			const groupTree = reactive(_this.$_.cloneDeep(props.OrgTree)); // 组织结构树
 			const positionList = reactive(props.PosList) // 职位列表
 			const {
 				appContext
 			} = getCurrentInstance();
 			const _this = appContext.config.globalProperties;
-			const groupTree = reactive(props.OrgTree); // 组织结构树
 			const rules = contract_rules; // 正则校验
 			const emporgLists = reactive({
 				emp: [{
@@ -127,48 +126,29 @@
 					produceLists.produce[index].productLimit = value[0].timE_LIMIT;
 				}
 			};
-			const onclearData = (val) => {}
-			// 附属部门变动时禁用已经选择的部门
-			const OnEmpOrgChange = (val) => {
-				var datas = getTreeitem(groupTree, val)
-				if (datas) {
-					console.log('%c⧭', 'color: #ca4c1b', datas)
-					datas.disabled = true
-					let info = emporgLists.emp.find(a=>a.OrgId==datas.id)
-					if(info){
-						info.OrgName=datas.label
-						info.OrgCode=datas.label
-					}
-				}
+			const onBaseOrgChange=(val)=>{
+				var datas=props.OrgTree.filter(x=>x.id==val)
+				const res = props.OrgTree.find(a=>a.id==val)
+    console.log('%c⧭', 'color: #00b300', datas)
 			}
-			// 当直属机构选择时禁用直属机构已经选择的机构
-			const onBaseOrgChange = (val) => {
-				baseorgid.value = val
-				var datas = getTreeitem(groupTree, val)
-				if (datas) {
-					datas.disabled = true
-				}
-			}
-			const getTreeitem = (data, val) => {
-				var result = null;
-				if (!data) {
+			//改变原有的价格
+			const priceChnage = (index) => {
+				//获取标准价格
+				const name = produceLists.produce[index].productValue;
+				if (!name) {
 					return;
 				}
-				for (var i = 0; i < data.length; i++) {
-					var item = data[i];
-					if (item.id === val) {
-						result = item;
-						return result;
-					}
-					if (item.children && item.children.length > 0) {
-						result = getTreeitem(item.children, val);
-						if (result) return result;
-					}
-					if (!(emporgLists.emp.find(a => a.OrgId == item.id)) && item.id != baseorgid.value) {
-						item.disabled = false
+				const value = productOptions.value.filter((item) => {
+					return item.name === name;
+				});
+				if (value) {
+					if (produceLists.produce[index].price.toString() === value[0].price.toString()) {
+						emit("change", false);
+					} else {
+						emit("change", true);
 					}
 				}
-			}
+			};
 			//添加附属部门
 			const addProduct = () => {
 				emporgLists.emp.push({
@@ -199,11 +179,9 @@
 				changeProduct,
 				groupTree,
 				treeLoading,
+				priceChnage,
 				positionList,
-				onBaseOrgChange,
-				OnEmpOrgChange,
-				baseorgid,
-				onclearData
+				onBaseOrgChange
 			};
 		},
 	};

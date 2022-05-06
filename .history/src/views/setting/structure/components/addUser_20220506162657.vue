@@ -64,7 +64,6 @@
 						class="treeselect"
 							v-model="Empform.orgId"
 							:data="groupTree"
-							@change="changeBaseOrg"
 							clearable
 						/>
 					</el-form-item>
@@ -78,7 +77,7 @@
           />
         </el-select>
 					</el-form-item>
-					<emp-org-pos v-if="groupTree.length>=1&&positionList.length>=1" :PosList="positionList" :OrgTree.sync="groupTree" ref="emporgposref"></emp-org-pos>
+					<emp-org-pos ref="emporgposref"></emp-org-pos>
 				</el-form>
 			</el-tab-pane>
 		</el-tabs>
@@ -136,7 +135,7 @@
 			const rules = ref();
 			const dialogForm = ref();
 			const positionList = ref([]) // 职位列表
-			const emporgposref = ref(null)
+			const emporgposref = ref()
 			const form = reactive({
 				id: null,
 				name: "",
@@ -199,9 +198,6 @@
 					})
 				})
 			}
-			const changeBaseOrg=(val)=>{
-				emporgposref.value.onBaseOrgChange(val)
-			}
 			// 获取角色下拉数据
 			const getRoleDropDown = async() => {
 				selectLoading.value = true;
@@ -239,7 +235,7 @@
 			};
 			// 点击确定
 			const clkSubmit = async() => {
-				var emporgs = emporgposref.value.getData()
+				var emporgs = emporgposref.value.getdata()
     console.log('%c⧭', 'color: #ffa640', emporgs)
 	return false
 				isSaveing.value = true;
@@ -297,8 +293,7 @@
 				treeLoading,
 				getGroupTree,
 				positionList,
-				emporgposref,
-				changeBaseOrg
+				emporgposref
 			};
 		},
 	};

@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-06 10:43:15
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-06 18:35:59
+ * @LastEditTime: 2022-05-06 16:35:09
  * @Description: file content
  * @FilePath: \front\src\views\setting\structure\components\emporgext.vue
 -->
@@ -34,12 +34,12 @@
 				<div class="flex mb15 justify-space-between align-items productTableItem" v-for="(val, index) in emporgLists.emp">
 					<div class="wp-260">
 						<el-form-item :prop="'emp.' + index + '.OrgId'" :rules="rules.productValue">
-							<el-tree-select @clear="onclearData" @change="OnEmpOrgChange" class="treeselect" v-model="val.OrgId" :data="groupTree" clearable />
+							<el-tree-select class="treeselect" v-model="val.OrgId" :data="groupTree" clearable />
 						</el-form-item>
 					</div>
 					<div class="wp-150">
 						<el-form-item :prop="'emp.' + index + '.PosId'" :rules="rules.price">
-							<el-select v-model="val.PosId" filterable clearable placeholder="请选择岗位" style="width:100%" @clear="clearSelect" @change="chgSelect">
+							<el-select v-model="val.PosId" filterable  clearable  placeholder="请选择岗位" style="width:100%" @clear="clearSelect" @change="chgSelect">
 								<el-option v-for="item in positionList" :key="item.value" :label="item.label" :value="item.value" />
 							</el-select>
 						</el-form-item>
@@ -80,32 +80,19 @@
 	} from "@/utils/rules/contract";
 	export default {
 		name: "EmpOrgPos",
-		props: {
-			// 组织机构列表
-			OrgTree: {
-				type: Array,
-				default: [],
-			},
-			// 岗位列表
-			PosList: {
-				type: Array,
-				default: [],
-			}
-		},
 		components: {
 			Plus
 		},
 		setup(props, {
 			emit
 		}) {
-			const baseorgid = ref() // 直属机构选择的id
 			const treeLoading = ref(false);
-			const positionList = reactive(props.PosList) // 职位列表
+			const groupTree = ref([]); // 组织结构树
+			const positionList = ref([]) // 职位列表
 			const {
 				appContext
 			} = getCurrentInstance();
 			const _this = appContext.config.globalProperties;
-			const groupTree = reactive(props.OrgTree); // 组织结构树
 			const rules = contract_rules; // 正则校验
 			const emporgLists = reactive({
 				emp: [{
@@ -127,48 +114,40 @@
 					produceLists.produce[index].productLimit = value[0].timE_LIMIT;
 				}
 			};
-			const onclearData = (val) => {}
-			// 附属部门变动时禁用已经选择的部门
-			const OnEmpOrgChange = (val) => {
-				var datas = getTreeitem(groupTree, val)
-				if (datas) {
-					console.log('%c⧭', 'color: #ca4c1b', datas)
-					datas.disabled = true
-					let info = emporgLists.emp.find(a=>a.OrgId==datas.id)
-					if(info){
-						info.OrgName=datas.label
-						info.OrgCode=datas.label
-					}
-				}
-			}
-			// 当直属机构选择时禁用直属机构已经选择的机构
-			const onBaseOrgChange = (val) => {
-				baseorgid.value = val
-				var datas = getTreeitem(groupTree, val)
-				if (datas) {
-					datas.disabled = true
-				}
-			}
-			const getTreeitem = (data, val) => {
-				var result = null;
-				if (!data) {
+			// 获取岗位列表下拉数据
+			const getPositionsList = async() => {
+				var res = await sysPosList();
+				if (res.code !== 200) {
+					ElMessage.error(res.message || "岗位列表加载失败，请稍后重试");
 					return;
 				}
-				for (var i = 0; i < data.length; i++) {
-					var item = data[i];
-					if (item.id === val) {
-						result = item;
-						return result;
-					}
-					if (item.children && item.children.length > 0) {
-						result = getTreeitem(item.children, val);
-						if (result) return result;
-					}
-					if (!(emporgLists.emp.find(a => a.OrgId == item.id)) && item.id != baseorgid.value) {
-						item.disabled = false
+				positionList.value = []
+				res.data.forEach(v => {
+					positionList.value.push({
+						label: v.name,
+						value: v.id
+					})
+				})
+			}
+			getPositionsList()
+			//改变原有的价格
+			const priceChnage = (index) => {
+				//获取标准价格
+				const name = produceLists.produce[index].productValue;
+				if (!name) {
+					return;
+				}
+				const value = productOptions.value.filter((item) => {
+					return item.name === name;
+				});
+				if (value) {
+					if (produceLists.produce[index].price.toString() === value[0].price.toString()) {
+						emit("change", false);
+					} else {
+						emit("change", true);
 					}
 				}
-			}
+			};
 			//添加附属部门
 			const addProduct = () => {
 				emporgLists.emp.push({
@@ -184,6 +163,18 @@
 			const deleteProduct = (index) => {
 				emporgLists.emp.splice(index, 1);
 			};
+			// 获取组织结构列表
+			const getGroupTree = async() => {
+				treeLoading.value = true;
+				var res = await alltree();
+				treeLoading.value = false;
+				if (res.code !== 200) {
+					ElMessage.error(res.message || "部门加载失败，请稍后重试！");
+					return;
+				}
+				groupTree.value = res.data;
+			};
+			getGroupTree();
 			//正则验证并返回数据
 			const formRef = ref();
 			const getData = () => {
@@ -199,11 +190,10 @@
 				changeProduct,
 				groupTree,
 				treeLoading,
-				positionList,
-				onBaseOrgChange,
-				OnEmpOrgChange,
-				baseorgid,
-				onclearData
+				getGroupTree,
+				priceChnage,
+				getPositionsList,
+				positionList
 			};
 		},
 	};

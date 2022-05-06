@@ -78,7 +78,7 @@
           />
         </el-select>
 					</el-form-item>
-					<emp-org-pos v-if="groupTree.length>=1&&positionList.length>=1" :PosList="positionList" :OrgTree.sync="groupTree" ref="emporgposref"></emp-org-pos>
+					<emp-org-pos v-if="groupTree.length>=1&&positionList.length>=1" :PosList="positionList" :OrgTree="groupTree" ref="emporgposref"></emp-org-pos>
 				</el-form>
 			</el-tab-pane>
 		</el-tabs>

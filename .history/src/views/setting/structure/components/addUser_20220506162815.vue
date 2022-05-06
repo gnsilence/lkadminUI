@@ -64,7 +64,6 @@
 						class="treeselect"
 							v-model="Empform.orgId"
 							:data="groupTree"
-							@change="changeBaseOrg"
 							clearable
 						/>
 					</el-form-item>
@@ -78,7 +77,7 @@
           />
         </el-select>
 					</el-form-item>
-					<emp-org-pos v-if="groupTree.length>=1&&positionList.length>=1" :PosList="positionList" :OrgTree.sync="groupTree" ref="emporgposref"></emp-org-pos>
+					<emp-org-pos ref="emporgposref"></emp-org-pos>
 				</el-form>
 			</el-tab-pane>
 		</el-tabs>
@@ -199,9 +198,6 @@
 					})
 				})
 			}
-			const changeBaseOrg=(val)=>{
-				emporgposref.value.onBaseOrgChange(val)
-			}
 			// 获取角色下拉数据
 			const getRoleDropDown = async() => {
 				selectLoading.value = true;
@@ -297,8 +293,7 @@
 				treeLoading,
 				getGroupTree,
 				positionList,
-				emporgposref,
-				changeBaseOrg
+				emporgposref
 			};
 		},
 	};
