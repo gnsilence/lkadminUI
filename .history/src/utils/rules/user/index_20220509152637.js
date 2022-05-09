@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-05 14:17:08
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-09 15:26:37
+ * @LastEditTime: 2022-05-05 15:19:27
  * @Description: file content
  * @FilePath: \front\src\utils\rules\user\index.js
  */

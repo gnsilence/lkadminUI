@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-06 10:43:15
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-09 16:09:00
+ * @LastEditTime: 2022-05-09 16:08:01
  * @Description: file content
  * @FilePath: \front\src\views\setting\structure\components\emporgext.vue
 -->
@@ -132,6 +132,7 @@
 			const OnEmpOrgChange = (val) => {
 				var datas = getTreeitem(groupTree, val)
 				if (datas) {
+					console.log('%c⧭', 'color: #ca4c1b', datas)
 					datas.disabled = true
 					let info = emporgLists.emp.find(a=>a.OrgId==datas.id)
 					if(info){
@@ -143,6 +144,7 @@
 			const chgSelect=(id,op)=>{
 				var position=positionList.find(a=>a.value==id)
 				op.PosName=position?.label
+    console.log('%c⧭', 'color: #408059', position)
 			}
 			// 当直属机构选择时禁用直属机构已经选择的机构
 			const onBaseOrgChange = (val) => {

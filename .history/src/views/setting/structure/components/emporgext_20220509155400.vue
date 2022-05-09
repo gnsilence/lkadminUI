@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-06 10:43:15
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-09 16:09:00
+ * @LastEditTime: 2022-05-09 15:53:59
  * @Description: file content
  * @FilePath: \front\src\views\setting\structure\components\emporgext.vue
 -->
@@ -39,8 +39,8 @@
 					</div>
 					<div class="wp-150">
 						<el-form-item :prop="'emp.' + index + '.PosId'" :rules="rules.price">
-							<el-select v-model="val.PosId" filterable clearable placeholder="请选择岗位" style="width:100%" @clear="clearSelect" @change="chgSelect($event,val)">
-								<el-option v-for="(item,t_index) in positionList" :key="item.value" :label="item.label" :value="item.value">{{item.label}}</el-option>
+							<el-select v-model="val.PosId" filterable clearable placeholder="请选择岗位" style="width:100%" @clear="clearSelect" @change="chgSelect(val)">
+								<el-option v-for="item in positionList" :key="item.value" :label="item.label" :value="item.value" />
 							</el-select>
 						</el-form-item>
 					</div>
@@ -132,6 +132,7 @@
 			const OnEmpOrgChange = (val) => {
 				var datas = getTreeitem(groupTree, val)
 				if (datas) {
+					console.log('%c⧭', 'color: #ca4c1b', datas)
 					datas.disabled = true
 					let info = emporgLists.emp.find(a=>a.OrgId==datas.id)
 					if(info){
@@ -140,9 +141,8 @@
 					}
 				}
 			}
-			const chgSelect=(id,op)=>{
-				var position=positionList.find(a=>a.value==id)
-				op.PosName=position?.label
+			const chgSelect=(val)=>{
+   console.log('%c⧭', 'color: #ffcc00', val)
 			}
 			// 当直属机构选择时禁用直属机构已经选择的机构
 			const onBaseOrgChange = (val) => {

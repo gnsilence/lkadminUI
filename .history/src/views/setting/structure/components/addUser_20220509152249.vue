@@ -13,53 +13,53 @@
 						<el-input v-model="form.name" placeholder="请输入完整的真实姓名" clearable></el-input>
 					</el-form-item>
 					<el-form-item label="性别" prop="name">
-						<el-radio-group v-model="form.sex">
-							<el-radio :label="1">男</el-radio>
-							<el-radio :label="2">女</el-radio>
+						<el-radio-group v-model="form.resource">
+							<el-radio label="男" />
+							<el-radio label="女" />
 						</el-radio-group>
 					</el-form-item>
 					<el-form-item label="邮箱" prop="email">
 						<el-input v-model="form.email" placeholder="请输入邮箱信息" clearable></el-input>
 					</el-form-item>
 					<template v-if="mode == 'add'">
-									<el-form-item label="登录密码" prop="password">
-										<el-input
-											type="password"
-											v-model="form.password"
-											clearable
-											autocomplete="new-password"
-											show-password
-										></el-input>
-									</el-form-item>
-									<el-form-item label="确认密码" prop="confirmpwd">
-										<el-input
-											@blur="setPwdValue"
-											type="password"
-											autocomplete="new-password"
-											v-model="form.confirm"
-											clearable
-											show-password
-										></el-input>
-									</el-form-item>
+							<el-form-item label="登录密码" prop="password">
+								<el-input
+									type="password"
+									v-model="form.password"
+									clearable
+									autocomplete="new-password"
+									show-password
+								></el-input>
+							</el-form-item>
+							<el-form-item label="确认密码" prop="confirmpwd">
+								<el-input
+									@blur="setPwdValue"
+									type="password"
+									autocomplete="new-password"
+									v-model="form.confirm"
+									clearable
+									show-password
+								></el-input>
+							</el-form-item>
 </template>
 				</el-form>
 			</el-tab-pane>
 			<el-tab-pane name="emp" label="员工信息">
 				<el-form
-					:model="Empform"
-					:rules="emp_rules"
+					:model="formemp"
+					:rules="emprules"
 					ref="dialogEmpForm"
 					label-width="100px"
 					label-position="left"
 				>
 					<el-form-item label="工号" prop="jobNum">
 						<el-input
-							v-model="Empform.jobNum"
+							v-model="form.jobNum"
 							placeholder="用于登录系统"
 							clearable
 						></el-input>
 					</el-form-item>
-					<el-form-item label="直属部门:" prop="orgId">
+					<el-form-item label="直属部门:" prop="limitTime">
 						<el-tree-select
 						class="treeselect"
 							v-model="Empform.orgId"
@@ -68,7 +68,7 @@
 							clearable
 						/>
 					</el-form-item>
-					<el-form-item label="直属岗位:" prop="posIdList">
+					<el-form-item label="直属岗位:" prop="limitTime">
 						 <el-select v-model="Empform.posIdList"  filterable :multiple-limit="5" clearable multiple placeholder="请选择岗位" style="width:100%" @clear="clearSelect" @change="chgSelect">
           <el-option
             v-for="item in positionList"
@@ -104,8 +104,7 @@
 		ElMessage
 	} from "element-plus";
 	import {
-		user_rules,
-		user_emp_rules
+		user_rules
 	} from "@/utils/rules/user";
 	import {
 		alltree
@@ -113,12 +112,9 @@
 	import {
 		sysPosList
 	} from '@/api/setting/structure/position.js'
-	import {
-		Adduser
-	} from '@/api/setting/structure/user.js'
 	import EmpOrgPos from './emporgext'
 	export default {
-		components: {
+		components:{
 			EmpOrgPos
 		},
 		setup(props, context) {
@@ -138,15 +134,12 @@
 			const isSaveing = ref(false);
 			const selectLoading = ref(true);
 			const rules = ref();
-			const emp_rules = reactive(user_emp_rules)
 			const dialogForm = ref();
-			const dialogEmpForm = ref()
 			const positionList = ref([]) // 职位列表
 			const emporgposref = ref(null)
 			const form = reactive({
 				id: null,
 				name: "",
-				sex:1,
 				email: "",
 				account: "",
 				password: "",
@@ -154,14 +147,14 @@
 				confirmpwd: {
 					pwd: "",
 					cpwd: "",
-				}
+				},
 			});
 			// 员工信息
 			const Empform = reactive({
 				orgId: "",
 				orgName: "",
 				jobNum: "",
-				posIdList: []
+				posIdList:[]
 			});
 			const setPwdValue = () => {
 				form.confirmpwd.pwd = form.password;
@@ -206,7 +199,7 @@
 					})
 				})
 			}
-			const changeBaseOrg = (val) => {
+			const changeBaseOrg=(val)=>{
 				emporgposref.value.onBaseOrgChange(val)
 			}
 			// 获取角色下拉数据
@@ -246,30 +239,14 @@
 			};
 			// 点击确定
 			const clkSubmit = async() => {
-				dialogForm.value.validate((valid, fields) => {
-					if (!valid) {
-						tabname.value = 'user'
-					} else {
-						dialogEmpForm.value.validate(async(valid, fields) => {
-							if (valid) {
-								var emporgs = emporgposref.value.getData()
-								var dataparam = form
-								var empparams = Empform
-								empparams.ExtIds = emporgs
-								dataparam.SysEmpParam = empparams
-								var res = await Adduser(dataparam)
-								if (res.code !== 200) {
-									ElMessage.error(res.message || "保存失败，请稍后重试");
-									return;
-								}
-								context.emit("close");
-								ElMessage.success("保存成功！");
-								context.emit("success");
-							}
-						})
+				dialogForm.value.validate((valid, fields)=>{
+					if(!valid){
+						tabname.value='user'
 					}
 				})
-				return false
+				var emporgs = emporgposref.value.getData()
+    console.log('%c⧭', 'color: #ffa640', emporgs)
+	return false
 				isSaveing.value = true;
 				data.value.grantRoleIdList = roleid.value;
 				var res = await grantRole(data.value);
@@ -326,9 +303,7 @@
 				getGroupTree,
 				positionList,
 				emporgposref,
-				changeBaseOrg,
-				emp_rules,
-				dialogEmpForm
+				changeBaseOrg
 			};
 		},
 	};

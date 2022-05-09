@@ -1,11 +1,3 @@
-/*
- * @Author: gongnan
- * @Date: 2022-04-24 10:29:59
- * @LastEditors: gongnan
- * @LastEditTime: 2022-05-09 13:55:23
- * @Description: file content
- * @FilePath: \front\src\main.js
- */
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/display.css'

@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-04-24 09:52:29
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-09 14:24:46
+ * @LastEditTime: 2022-05-09 13:58:59
  * @Description: file content
  * @FilePath: \front\vite.config.js
  */
@@ -42,7 +42,6 @@ export default defineConfig({
 	],
 	// 打包后移除log及debug
 	build: {
-		cssCodeSplit: true,// 拆分css
 		minify: 'terser',
 		terserOptions: {
 			compress: {

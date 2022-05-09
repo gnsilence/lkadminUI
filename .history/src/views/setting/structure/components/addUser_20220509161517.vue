@@ -13,9 +13,9 @@
 						<el-input v-model="form.name" placeholder="请输入完整的真实姓名" clearable></el-input>
 					</el-form-item>
 					<el-form-item label="性别" prop="name">
-						<el-radio-group v-model="form.sex">
-							<el-radio :label="1">男</el-radio>
-							<el-radio :label="2">女</el-radio>
+						<el-radio-group v-model="form.resource">
+							<el-radio label="男" />
+							<el-radio label="女" />
 						</el-radio-group>
 					</el-form-item>
 					<el-form-item label="邮箱" prop="email">
@@ -146,7 +146,6 @@
 			const form = reactive({
 				id: null,
 				name: "",
-				sex:1,
 				email: "",
 				account: "",
 				password: "",

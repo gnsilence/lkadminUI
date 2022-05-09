@@ -117,7 +117,6 @@
 				if (command == "clearCache") {
 					this.$confirm('清除缓存会将系统初始化，包括登录状态、主题、语言设置等，是否继续？', '提示', {
 						type: 'info',
-						cancelButtonText:'取消'
 					}).then(async () => {
 						const loading = this.$loading()
 						await this.$API.auth.clearUserCache.get()
