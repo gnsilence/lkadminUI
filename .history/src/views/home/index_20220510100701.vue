@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-04-24 10:29:59
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-10 10:07:19
+ * @LastEditTime: 2022-05-10 10:05:04
  * @Description: file content
  * @FilePath: \front\src\views\home\index.vue
 -->
@@ -33,6 +33,7 @@
 	      ">
 			UP
 		</div> -->
+		<el-icon><top /></el-icon>
 	</el-backtop>
 </template>
 

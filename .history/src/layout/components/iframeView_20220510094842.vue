@@ -4,13 +4,28 @@
  * @Author: sakuya
  * @Date: 2021年6月30日13:20:41
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-10 09:48:55
+ * @LastEditTime: 2022-05-10 09:48:42
 -->
 
 <template>
 	<div v-show="$route.meta.type=='iframe'" class="iframe-pages">
-		<iframe v-for="item in iframeList" :key="item.meta.url" v-show="$route.meta.url==item.meta.url" :src="item.meta.url" frameborder='0'>
-		</iframe>
+		<!-- <iframe v-for="item in iframeList" :key="item.meta.url" v-show="$route.meta.url==item.meta.url" :src="item.meta.url" frameborder='0'>
+			<el-backtop :visibility-height="100" :bottom="100" :right="20">
+    <div
+      style="
+        height: 100%;
+        width: 100%;
+        background-color: var(--el-bg-color-overlay);
+        box-shadow: var(--el-box-shadow-lighter);
+        text-align: center;
+        line-height: 40px;
+        color: #1989fa;
+      "
+    >
+      UP
+    </div>
+  </el-backtop>
+		</iframe> -->
 	</div>
 </template>
 

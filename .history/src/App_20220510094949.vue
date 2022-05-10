@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-05 09:30:02
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-10 09:53:05
+ * @LastEditTime: 2022-05-10 09:49:48
  * @Description: file content
  * @FilePath: \front\src\App.vue
 -->

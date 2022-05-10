@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-05 09:30:02
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-10 09:53:05
+ * @LastEditTime: 2022-05-10 09:40:26
  * @Description: file content
  * @FilePath: \front\src\App.vue
 -->
@@ -10,6 +10,21 @@
 	<el-config-provider :locale="$i18n.messages[$i18n.locale].el" :button="{autoInsertSpace: false}">
 		<router-view></router-view>
 	</el-config-provider>
+		<el-backtop :bottom="100">
+    <div
+      style="
+        height: 100%;
+        width: 100%;
+        background-color: var(--el-bg-color-overlay);
+        box-shadow: var(--el-box-shadow-lighter);
+        text-align: center;
+        line-height: 40px;
+        color: #1989fa;
+      "
+    >
+      UP
+    </div>
+  </el-backtop>
 </template>
 
 <script>

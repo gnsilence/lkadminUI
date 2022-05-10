@@ -232,9 +232,9 @@
 //   background: rgba(0, 0, 0, 0.1);
 // }
 
-// ::-webkit-scrollbar-thumb:window-inactive {
-//   background: rgba(0, 0, 0, 0.1);
-// }
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(0, 0, 0, 0.1);
+}
 
 .settingForm {
   .el-form-item {

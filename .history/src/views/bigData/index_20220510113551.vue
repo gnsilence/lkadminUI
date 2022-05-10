@@ -1,5 +1,13 @@
 <!--
  * @Author: gongnan
+ * @Date: 2022-05-10 11:15:15
+ * @LastEditors: gongnan
+ * @LastEditTime: 2022-05-10 11:35:51
+ * @Description: file content
+ * @FilePath: \front\src\views\bigData\index.vue
+-->
+<!--
+ * @Author: gongnan
  * @Date: 2022-04-24 10:29:59
  * @LastEditors: gongnan
  * @LastEditTime: 2022-05-10 10:07:19
@@ -7,9 +15,9 @@
  * @FilePath: \front\src\views\home\index.vue
 -->
 <template>
-	<div>
+	<div style="overflow-x:hidden;overflow-y:hidden;scrollbar-width: 100px;" class="wighcontainer">
 		<div v-if="pageLoading">
-			<el-main class="container">
+			<el-main>
 				<el-card shadow="never">
 					<el-skeleton :rows="1"></el-skeleton>
 				</el-card>
@@ -18,36 +26,19 @@
 				</el-card>
 			</el-main>
 		</div>
-		<work v-if="dashboard=='1'" @on-mounted="onMounted"></work>
-		<widgets v-else @on-mounted="onMounted"></widgets>
+		<widgets @on-mounted="onMounted"></widgets>
 	</div>
-	<el-backtop target=".adminui-main" :visibility-height="300" :bottom="60" :right="40">
-		<!-- <div style="
-	        height: 100%;
-	        width: 100%;
-	        background-color: var(--el-bg-color-overlay);
-	        box-shadow: var(--el-box-shadow-lighter);
-	        text-align: center;
-	        line-height: 40px;
-	        color: #1989fa;
-	      ">
-			UP
-		</div> -->
-	</el-backtop>
 </template>
 
 <script>
 	import {
 		defineAsyncComponent
 	} from 'vue';
-	const work = defineAsyncComponent(() =>
-		import ('./work'));
 	const widgets = defineAsyncComponent(() =>
 		import ('./widgets'));
 	export default {
 		name: "dashboard",
 		components: {
-			work,
 			widgets
 		},
 		data() {
@@ -70,8 +61,4 @@
 </script>
 
 <style scoped>
-	.container {
-		height: 100%;
-		overflow-x: hidden;
-	}
 </style>

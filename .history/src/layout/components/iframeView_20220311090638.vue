@@ -3,14 +3,13 @@
  * @version: 1.0
  * @Author: sakuya
  * @Date: 2021年6月30日13:20:41
- * @LastEditors: gongnan
- * @LastEditTime: 2022-05-10 09:48:55
+ * @LastEditors:
+ * @LastEditTime:
 -->
 
 <template>
 	<div v-show="$route.meta.type=='iframe'" class="iframe-pages">
-		<iframe v-for="item in iframeList" :key="item.meta.url" v-show="$route.meta.url==item.meta.url" :src="item.meta.url" frameborder='0'>
-		</iframe>
+		<iframe v-for="item in iframeList" :key="item.meta.url" v-show="$route.meta.url==item.meta.url" :src="item.meta.url" frameborder='0'></iframe>
 	</div>
 </template>
 
