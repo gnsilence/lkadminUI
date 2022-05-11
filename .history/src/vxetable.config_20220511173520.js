@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-07 16:51:47
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-11 18:05:59
+ * @LastEditTime: 2022-05-11 17:35:20
  * @Description: file content
  * @FilePath: \front\src\vxetable.config.js
  */
@@ -130,7 +130,7 @@ VXETable.setup({
 	   showHeaderOverflow: null,
 	   showFooterOverflow: null,
 	   size: null,
-	   autoResize: true,
+	   autoResize: false,
 	   stripe: true, // 斑马线
 	   border: false,
 	   round: false,

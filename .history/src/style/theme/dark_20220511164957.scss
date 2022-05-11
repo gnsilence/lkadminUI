@@ -262,25 +262,22 @@
 	.sc-upload-uploader {border-color: $--border-color;}
 	.setting-column .setting-column__title {border-color: $--border-color;}
 	.setting-column .setting-column__bottom {border-color: $--border-color;}
+	@import 'vxe-table/styles/variable.scss';
 
-	.vxe-table--body{
-		background-color: #3f3f3f !important;
-		border-color: #434343 !important;
-	}
-	.vxe-table--header-wrapper{
-		background-color: #2b2b2b !important;
-	}
-	.vxe-table--render-default{
-		color: #d0d0d0 !important;
-	}
-	// .vxe-table-font-color{
-	// 	color: #d0d0d0;
-	// }
+        // 修改样式变量
+        $vxe-font-size: 14px;
+        $vxe-font-color: #666;
+        $vxe-primary-color: #409eff;
+        $vxe-table-font-color: $vxe-font-color;
+        $vxe-table-border-color: #5a5d6118;
+        $vxe-table-border-radius: 4px;
+        // ...
 
-	// --vxe-table-font-color: #d0d0d0;
-// 		--el-table-header-bg-color: #2b2b2b;
-// 		--el-table-current-row-bg-color: #3f3f3f;
-// 		--el-table-row-hover-bg-color: #373737;
-// 		--el-table-border-color: #434343;
-//
+        @import 'vxe-table/styles/icon.scss';
+        @import 'vxe-table/styles/table.scss';
+        @import 'vxe-table/styles/column.scss';
+        @import 'vxe-table/styles/header.scss';
+        @import 'vxe-table/styles/body.scss';
+        @import 'vxe-table/styles/footer.scss';
+        @import 'vxe-table/styles/filter.scss';
 }

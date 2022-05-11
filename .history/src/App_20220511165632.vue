@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-05 09:30:02
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-11 17:02:54
+ * @LastEditTime: 2022-05-11 16:56:32
  * @Description: file content
  * @FilePath: \front\src\App.vue
 -->
@@ -50,5 +50,5 @@
 <style lang="scss">
 	@import '@/style/style.scss';
 	@import '@/style/theme/dark.scss';
-	// @import '@/style/theme/vextable.scss';
+	@import '@/style/theme/vextable.scss';
 </style>

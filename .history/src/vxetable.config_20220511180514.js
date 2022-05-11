@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-07 16:51:47
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-11 18:05:59
+ * @LastEditTime: 2022-05-11 18:05:14
  * @Description: file content
  * @FilePath: \front\src\vxetable.config.js
  */
@@ -229,6 +229,7 @@ VXETable.setup({
 	   size: null,
 	   autoHidden: false,
 	   perfect: true,
+	   align: 'right',
 	   pageSize: 10,
 	   pagerCount: 7,
 	   pageSizes: [10, 15, 20, 50, 100],
