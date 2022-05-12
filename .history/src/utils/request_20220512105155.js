@@ -6,7 +6,7 @@ import {
 import sysConfig from '@/config'
 import tool from '@/utils/tool'
 import router from '@/router'
-import { save } from "./recorderror";
+
 axios.defaults.baseURL = ''
 
 axios.defaults.timeout = sysConfig.TIMEOUT
@@ -37,6 +37,7 @@ axios.interceptors.request.use(
 // HTTP response 拦截器
 axios.interceptors.response.use(
 	(response) => {
+  console.log('%c⧭', 'color: #99adcc', response);
 		if (response.headers['access-token']) {
 			tool.data.set('TOKEN', response.headers['access-token'])
 		}
@@ -80,7 +81,7 @@ axios.interceptors.response.use(
 				message: '请求服务器无响应！'
 			})
 		}
-		save()
+
 		return Promise.reject(error.response)
 	}
 )

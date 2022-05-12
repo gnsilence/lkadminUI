@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-05 09:30:02
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-12 17:27:24
+ * @LastEditTime: 2022-05-12 15:50:43
  * @Description: file content
  * @FilePath: \front\src\App.vue
 -->
@@ -15,7 +15,7 @@
 <script>
 	import colorTool from '@/utils/color'
 	import timer from '@/utils/timer'
-	import { save } from "@/utils/recorderror";
+	import { record } from 'rrweb'
 	// import * as echarts from 'echarts'
 	// import {
 	// 	provide,
@@ -26,7 +26,6 @@
 	export default {
 		name: 'App',
 		setup() {
-			// save()
 			// provide('ec', echarts)
 			onBeforeUnmount(() => timer && clearInterval(timer))
 			const {

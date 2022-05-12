@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-04-24 10:29:59
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-12 16:21:43
+ * @LastEditTime: 2022-05-12 16:14:41
  * @Description: file content
  * @FilePath: \front\src\utils\errorHandler.js
  */
@@ -10,9 +10,21 @@
  * 全局代码错误捕捉
  * 比如 null.length 就会被捕捉到
  */
+import {
+	record
+} from 'rrweb'
 
+function SaveRecord() {
+	record({
+		emit(event) {
+			console.log('%c⧭', 'color: #7f7700', event)
+			// 用任意方式存储 event
+		},
+	});
+}
 export default (error, vm) => {
 	console.log('%c⧭', 'color: #f279ca', error);
+	SaveRecord()
 	//过滤HTTP请求错误
 	if (error.status) {
 		return false

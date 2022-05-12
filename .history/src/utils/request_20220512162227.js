@@ -47,6 +47,7 @@ axios.interceptors.response.use(
 	},
 	(error) => {
 		if (error.response) {
+			save()
 			if (error.response.status === 404) {
 				ElMessage.error({
 					title: '请求错误',
@@ -80,7 +81,7 @@ axios.interceptors.response.use(
 				message: '请求服务器无响应！'
 			})
 		}
-		save()
+
 		return Promise.reject(error.response)
 	}
 )

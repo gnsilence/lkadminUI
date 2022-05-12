@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-05 09:30:02
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-12 17:27:24
+ * @LastEditTime: 2022-05-12 15:51:20
  * @Description: file content
  * @FilePath: \front\src\App.vue
 -->
@@ -26,7 +26,6 @@
 	export default {
 		name: 'App',
 		setup() {
-			// save()
 			// provide('ec', echarts)
 			onBeforeUnmount(() => timer && clearInterval(timer))
 			const {

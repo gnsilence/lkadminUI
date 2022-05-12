@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-04-24 10:29:59
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-12 16:21:43
+ * @LastEditTime: 2022-05-12 15:42:33
  * @Description: file content
  * @FilePath: \front\src\utils\errorHandler.js
  */
@@ -11,10 +11,10 @@
  * 比如 null.length 就会被捕捉到
  */
 
-export default (error, vm) => {
-	console.log('%c⧭', 'color: #f279ca', error);
+export default (error, vm)=>{
+ console.log('%c⧭', 'color: #f279ca', error);
 	//过滤HTTP请求错误
-	if (error.status) {
+	if(error.status){
 		return false
 	}
 

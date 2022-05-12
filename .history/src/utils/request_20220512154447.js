@@ -6,7 +6,7 @@ import {
 import sysConfig from '@/config'
 import tool from '@/utils/tool'
 import router from '@/router'
-import { save } from "./recorderror";
+
 axios.defaults.baseURL = ''
 
 axios.defaults.timeout = sysConfig.TIMEOUT
@@ -80,7 +80,7 @@ axios.interceptors.response.use(
 				message: '请求服务器无响应！'
 			})
 		}
-		save()
+
 		return Promise.reject(error.response)
 	}
 )
