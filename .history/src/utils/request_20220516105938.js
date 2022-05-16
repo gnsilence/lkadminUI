@@ -6,6 +6,9 @@ import {
 import sysConfig from '@/config'
 import tool from '@/utils/tool'
 import router from '@/router'
+import {
+	save
+} from "./recorderror";
 axios.defaults.baseURL = ''
 
 axios.defaults.timeout = sysConfig.TIMEOUT
@@ -29,6 +32,7 @@ axios.interceptors.request.use(
 		return config
 	},
 	(error) => {
+  console.log('%c⧭', 'color: #994d75', error);
 		return Promise.reject(error)
 	}
 )
@@ -42,27 +46,17 @@ axios.interceptors.response.use(
 		if (response.headers['x-access-token']) {
 			tool.data.set('x-token', response.headers['x-access-token'])
 		}
-		if (response.data && response.data.code === 400) {
-			// 输入项验证错误时给出提示
-			var msgs = Object.values(response.data.message)
-			ElMessage.error({
-				title: '请求错误',
-				message: msgs.join(','),
-				duration:0,
-				'show-close':true
-			})
-			return false
-		}
 		return response
 	},
 	(error) => {
 		if (error.response) {
+   console.log('%c⧭', 'color: #00258c', error.response);
 			if (error.response.status === 404) {
 				ElMessage.error({
 					title: '请求错误',
 					message: 'Status:404，正在请求不存在的服务器记录！'
 				})
-			} else if (error.response.status === 400) {
+			} else if (error.response.status===400) {
 				ElMessage.error({
 					title: '请求错误',
 					message: error.response.message || 'Status:400，服务调用发生错误！'
@@ -95,6 +89,7 @@ axios.interceptors.response.use(
 				message: '请求服务器无响应！'
 			})
 		}
+		save()
 		return Promise.reject(error.response)
 	}
 )

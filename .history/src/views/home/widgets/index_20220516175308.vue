@@ -2,7 +2,7 @@
 	<div :class="['widgets-home', customizing?'customizing':'']" ref="main">
 		<div class="widgets-content">
 			<div class="widgets-top">
-				<div v-auth="`sys:setParam`" class="widgets-top-title">
+				<div class="widgets-top-title">
 					控制台
 				</div>
 				<div class="widgets-top-actions">

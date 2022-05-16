@@ -1,11 +1,3 @@
-/*
- * @Author: gongnan
- * @Date: 2022-04-24 10:29:59
- * @LastEditors: gongnan
- * @LastEditTime: 2022-05-16 18:06:37
- * @Description: file content
- * @FilePath: \front\src\utils\useTabs.js
- */
 import { nextTick  } from 'vue'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'

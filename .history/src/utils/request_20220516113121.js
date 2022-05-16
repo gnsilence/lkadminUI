@@ -6,6 +6,10 @@ import {
 import sysConfig from '@/config'
 import tool from '@/utils/tool'
 import router from '@/router'
+import {
+	save
+} from "./recorderror";
+import { forEach } from 'lodash'
 axios.defaults.baseURL = ''
 
 axios.defaults.timeout = sysConfig.TIMEOUT
@@ -43,13 +47,10 @@ axios.interceptors.response.use(
 			tool.data.set('x-token', response.headers['x-access-token'])
 		}
 		if (response.data && response.data.code === 400) {
-			// 输入项验证错误时给出提示
 			var msgs = Object.values(response.data.message)
 			ElMessage.error({
 				title: '请求错误',
-				message: msgs.join(','),
-				duration:0,
-				'show-close':true
+				message: msgs.join(',')
 			})
 			return false
 		}
@@ -95,6 +96,7 @@ axios.interceptors.response.use(
 				message: '请求服务器无响应！'
 			})
 		}
+		save()
 		return Promise.reject(error.response)
 	}
 )

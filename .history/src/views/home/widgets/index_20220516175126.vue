@@ -2,12 +2,12 @@
 	<div :class="['widgets-home', customizing?'customizing':'']" ref="main">
 		<div class="widgets-content">
 			<div class="widgets-top">
-				<div v-auth="`sys:setParam`" class="widgets-top-title">
+				<div class="widgets-top-title">
 					控制台
 				</div>
 				<div class="widgets-top-actions">
 					<el-button v-if="customizing" type="primary" icon="el-icon-check" round @click="save">完成</el-button>
-					<el-button v-else type="primary" v-auth="`sys:setParam`" icon="el-icon-edit" round @click="custom">自定义</el-button>
+					<el-button v-else type="primary" icon="el-icon-edit" round @click="custom">自定义</el-button>
 				</div>
 			</div>
 			<div class="widgets" ref="widgets">
