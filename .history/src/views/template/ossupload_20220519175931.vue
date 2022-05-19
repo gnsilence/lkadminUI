@@ -1,0 +1,303 @@
+<!--
+ * @Author: gongnan
+ * @Date: 2022-05-19 10:48:32
+ * @LastEditors: gongnan
+ * @LastEditTime: 2022-05-19 17:59:31
+ * @Description: file content
+ * @FilePath: \front\src\views\template\ossupload.vue
+-->
+<template>
+	<uploader :fileStatusText="statusText" @file-added="onFileAdded" @file-success="onFileSuccess" @file-progress="onFileProgress" @file-error="onFileError" :options="options" class="uploader-example">
+		<uploader-unsupport></uploader-unsupport>
+		<uploader-drop>
+			<p>拖动文件到此处或跟进类型进行选择</p>
+			<uploader-btn>选择文件</uploader-btn>
+			<uploader-btn :attrs="attrs">选择指定类型文件</uploader-btn>
+			<uploader-btn :directory="true">选择文件夹</uploader-btn>
+		</uploader-drop>
+		<uploader-list v-show="panelShow">
+			<div class="file-panel" slot-scope="props" :class="{ collapse: collapse }">
+				<div class="file-title">
+					<h2>文件列表</h2>
+					<div class="operate">
+						<el-button @click="fileListShow" type="text" :title="collapse ? '展开' : '折叠'">
+							<i class="iconfont" :class="collapse ? 'icon-zhankai' : 'icon-zhedie'"></i>
+						</el-button>
+						<el-button @click="close" type="text" title="关闭">
+							<i class="iconfont icon-icon-closes"></i>
+						</el-button>
+					</div>
+				</div>
+				<ul class="file-list">
+					<li v-for="file in props.fileList" :key="file.id">
+						<uploader-file :class="'file_' + file.id" ref="files" :file="file" :list="true"></uploader-file>
+					</li>
+					<div class="no-file" v-if="!props.fileList.length">
+						<i class="iconfont icon-empty-file"></i> 暂无待上传文件
+					</div>
+				</ul>
+			</div>
+		</uploader-list>
+	</uploader>
+</template>
+
+<script>
+	import {
+		nextTick,
+		ref,
+		onMounted
+	} from 'vue'
+	import {
+		ACCEPT_CONFIG
+	} from "@/utils/accept_config";
+	import SparkMD5 from "spark-md5";
+	import {
+		useEventBus
+	} from '@vueuse/core'
+	import {
+		Compose
+	} from "@/api/common";
+	import {
+		ElMessage,
+		ElMessageBox
+	} from 'element-plus'
+	export default {
+		setup() {
+			const bus = useEventBus('openUploader')
+			// 监听事件总线
+			const listener = (event) => {
+				console.log(`news: ${event}`)
+			}
+			const unsubscribe = bus.on(listener) // 开始监听
+			const panelShow = ref(false)
+			const collapse = ref(false)
+			const attrs = reactive({
+				accept: ACCEPT_CONFIG.getAll()
+			})
+			const baseUrl = ref('http://localhost:9000/oss/')
+			const uploader = ref(null)
+			const options = {
+				target: baseUrl.value + "minio", // '//jsonplaceholder.typicode.com/posts/',
+				chunkSize: 5242880, //分块大小
+				fileParameterName: "upfile", //上传文件时文件的参数名，默认file
+				maxChunkRetries: 5, //最大自动失败重试上传次数
+				forceChunkSize: true, // 强制每片都小于分片大小
+				testChunks: true, //是否开启服务器分片校验
+				// 服务器分片校验函数，秒传及断点续传基础
+				checkChunkUploadedByResponse: function(chunk, res) {
+					res = JSON.parse(res);
+					let objMessage = res.data;
+					if (objMessage.skipUpload) {
+						return true;
+					}
+					return (objMessage.uploaded || []).indexOf(chunk.offset + 1) >= 0;
+				},
+				headers: {
+					//   Authorization: Ticket.get() && "Bearer " + Ticket.get().access_token,
+				},
+				query() {},
+			}
+			const statusText = reactive({
+				success: '上传成功',
+				error: '上传失败',
+				uploading: '上传中...',
+				paused: '暂停上传',
+				waiting: '等待中...'
+			})
+			const complete = () => {
+				console.log('complete', arguments)
+			}
+			const fileComplete = () => {
+				console.log('file complete', arguments)
+			}
+			/**
+			 * 新增的自定义的状态: 'md5'、'transcoding'、'failed'
+			 * @param id
+			 * @param status
+			 */
+			const statusSet = (id, status) => {
+				let statusMap = {
+					md5: {
+						text: "校验MD5",
+						bgc: "#fff",
+					},
+					merging: {
+						text: "合并中",
+						bgc: "#e2eeff",
+					},
+					transcoding: {
+						text: "转码中",
+						bgc: "#e2eeff",
+					},
+					failed: {
+						text: "上传失败",
+						bgc: "#e2eeff",
+					},
+				};
+				// nextTick(() => {
+				// 	$(`<p class="myStatus_${id}"></p>`)
+				// 		.appendTo(`.file_${id} .uploader-file-status`)
+				// 		.css({
+				// 			position: "absolute",
+				// 			top: "0",
+				// 			left: "0",
+				// 			right: "0",
+				// 			bottom: "0",
+				// 			zIndex: "1",
+				// 			backgroundColor: statusMap[status].bgc,
+				// 		})
+				// 		.text(statusMap[status].text);
+				// });
+			}
+			const onFileAdded = () => {}
+			const onFileProgress = () => {}
+			const onFileSuccess = async(rootFile, file, response, chunk) => {
+				console.log('%c⧭', 'color: #8c0038', response)
+				let res = JSON.parse(response);
+				// 服务器自定义的错误（即虽返回200，但是是错误的情况），这种错误是Uploader无法拦截的
+				if (!res.success) {
+					ElMessage.error({
+						message: res.msg
+					})
+					// 文件状态设为“失败”
+					statusSet(file.id, "failed");
+					return;
+				}
+				// 如果服务端返回需要合并;
+				// alert(res.data.needMerge == true);
+				if (res.data.needMerge) {
+					// 文件状态设为“合并中”
+					console.log(file.id);
+					statusSet(file.id, "merging");
+					const merge = await Compose({
+						identifier: file.uniqueIdentifier
+					})
+					if (merge.success) {}
+				} else {
+					bus.emit("fileSuccess");
+					console.log("上传成功");
+				}
+			}
+			onMounted(() => {
+					nextTick(() => {
+						window.uploader = uploader.value.uploader
+					})
+				}),
+				onUnmounted(() => {
+					bus.off(listener)
+				})
+			return {
+				uploader,
+				options,
+				attrs,
+				statusText,
+				complete,
+				fileComplete,
+				onFileSuccess,
+				onFileAdded,
+				onFileProgress
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.uploader-example {
+		width: 880px;
+		padding: 15px;
+		margin: 40px auto 0;
+		height: 500px;
+		font-size: 12px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+	}
+	.uploader-example .uploader-btn {
+		margin-right: 4px;
+	}
+	.uploader-example .uploader-list {
+		max-height: 440px;
+		overflow: auto;
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+	#global-uploader {
+		position: fixed;
+		z-index: 20;
+		right: 15px;
+		bottom: 15px;
+		.uploader-app {
+			width: 670px;
+		}
+		.file-panel {
+			background-color: #fff;
+			border: 1px solid #e2e2e2;
+			border-radius: 7px 7px 0 0;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+			.file-title {
+				display: flex;
+				height: 40px;
+				line-height: 0px;
+				padding: 0 15px;
+				border-bottom: 1px solid #ddd;
+				.operate {
+					flex: 1;
+					text-align: right;
+				}
+			}
+			.file-list {
+				position: relative;
+				height: 240px;
+				overflow-x: hidden;
+				overflow-y: auto;
+				background-color: #fff;
+				>li {
+					background-color: #fff;
+				}
+			}
+			&.collapse {
+				.file-title {
+					background-color: #e7ecf2;
+				}
+			}
+		}
+		.no-file {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-size: 16px;
+		}
+		:deep(.uploader-file-icon) {
+			&:before {
+				content: "" !important;
+			}
+			width: auto;
+			&[icon="image"] {
+				background: url(./images/image-icon.png);
+			}
+			&[icon="video"] {
+				background: url(./images/video-icon.png);
+			}
+			&[icon="document"] {
+				background: url(./images/text-icon.png);
+			}
+		}
+		:deep(.uploader-file-actions>span) {
+			margin-right: 6px;
+		}
+		:deep(.uploader-file-meta) {
+			width: 0;
+		}
+		:deep(.uploader-file-name){
+			text-indent: 0;
+			width: 49%;
+		}
+		:deep(.uploader-file-size){
+			width: 16%;
+		}
+	}
+	/* 隐藏上传按钮 */
+	#global-uploader-btn {
+		position: absolute;
+		clip: rect(0, 0, 0, 0);
+	}
+</style>
