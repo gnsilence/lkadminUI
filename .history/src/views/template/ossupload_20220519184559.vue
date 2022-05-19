@@ -2,7 +2,7 @@
  * @Author: gongnan
  * @Date: 2022-05-19 10:48:32
  * @LastEditors: gongnan
- * @LastEditTime: 2022-05-19 18:45:59
+ * @LastEditTime: 2022-05-19 18:01:39
  * @Description: file content
  * @FilePath: \front\src\views\template\ossupload.vue
 -->
