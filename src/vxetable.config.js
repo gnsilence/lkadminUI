@@ -13,7 +13,7 @@ import {
 
 	// 表格功能
 	Header,
-	Footer,
+	// Footer,
 	Icon,
 	Filter,
 	Edit,
